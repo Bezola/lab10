@@ -78,13 +78,14 @@ def whose_turn(button):
 
     if game_matrix[int(coord_list[0]) - 1][int(coord_list[1]) - 1] == '-':
         turn_counter += 1
-        if turn_counter % 2 == 0:
+        if turn_counter % 2 != 0:
+            button["text"], mark = '☓', 'крестов'
+            game_matrix[int(coord_list[0]) - 1][int(coord_list[1]) - 1] = button["text"]
+
+            turn_counter += 1
             button_in_use[str(button_bot[0] + 1) + ' ' + str(button_bot[1] + 1)]["text"], mark = 'O', 'кругов'
             game_matrix[button_bot[0]][button_bot[1]] = \
                 button_in_use[str(button_bot[0] + 1) + ' ' + str(button_bot[1] + 1)]["text"]
-        else:
-            button["text"], mark = '☓', 'крестов'
-            game_matrix[int(coord_list[0]) - 1][int(coord_list[1]) - 1] = button["text"]
 
         if game_end_check(mark)[0]:
             showinfo('', game_end_check(mark)[1])
