@@ -54,6 +54,7 @@ def bot_play():
                 if game_matrix[int_j][int_i] == '-':
                     return [int_j, int_i]
 
+
 def gamestate(mark):
     global game_matrix
     global turn_counter
@@ -64,6 +65,10 @@ def gamestate(mark):
         for button_num in range(len(button_list)):
             button_in_use[button_list[button_num]].config(text='')
             turn_counter = 0
+        return True
+    else:
+        return False
+
 
 def game_end_check(mark):
     for i in range(3):
@@ -90,13 +95,12 @@ def whose_turn(button):
         button["text"], mark = '☓', 'крестов'
         game_matrix[int(coord_list[0]) - 1][int(coord_list[1]) - 1] = button["text"]
 
-        gamestate(mark)
-
-        turn_counter += 1
-        button_bot = bot_play()
-        button_in_use[str(button_bot[0] + 1) + ' ' + str(button_bot[1] + 1)]["text"], mark = 'O', 'кругов'
-        game_matrix[button_bot[0]][button_bot[1]] = \
-            button_in_use[str(button_bot[0] + 1) + ' ' + str(button_bot[1] + 1)]["text"]
+        if not gamestate(mark):
+            turn_counter += 1
+            button_bot = bot_play()
+            button_in_use[str(button_bot[0] + 1) + ' ' + str(button_bot[1] + 1)]["text"], mark = 'O', 'кругов'
+            game_matrix[button_bot[0]][button_bot[1]] = \
+                button_in_use[str(button_bot[0] + 1) + ' ' + str(button_bot[1] + 1)]["text"]
 
         gamestate(mark)
 
@@ -110,6 +114,4 @@ for btn_num in range(len(button_list)):
     button_in_use[button_list[btn_num]].config(height=5, width=10, font=font,
                                                command=lambda m=button_in_use[button_list[btn_num]]: whose_turn(m))
     button_in_use[button_list[btn_num]].place(x=button_x_coordinates[x], y=button_y_coordinate)
-
-# --------------------------------
 root.mainloop()
